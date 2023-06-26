@@ -5,11 +5,9 @@ import com.project.questappbackend.business.abstracts.UserService;
 import com.project.questappbackend.business.dtos.requests.postRequests.CreatePostRequest;
 import com.project.questappbackend.business.dtos.requests.postRequests.UpdatePostRequest;
 import com.project.questappbackend.business.dtos.responses.GetByIdPostResponse;
-import com.project.questappbackend.business.dtos.responses.GetByIdUserResponse;
 import com.project.questappbackend.business.dtos.responses.PostListResponse;
+import com.project.questappbackend.business.dtos.responses.UserAllPostResponse;
 import com.project.questappbackend.dataAccess.PostRepository;
-import com.project.questappbackend.entities.Post;
-import com.project.questappbackend.entities.User;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -21,6 +19,7 @@ import java.util.List;
 @RequestMapping("/posts")
 @AllArgsConstructor
 public class PostController {
+
     private PostService postService;
     private UserService userService;
     private PostRepository postRepository;
@@ -29,6 +28,16 @@ public class PostController {
     @GetMapping
     public List<PostListResponse> getAllPosts() {
         return postService.getAllPost();
+    }
+
+    @GetMapping("/UserAllPost/{userId}")
+    public  List<UserAllPostResponse> getAllUserPost(@PathVariable Long userId) {
+        try {
+            return postService.getUserAllPosts(userId);
+        } catch (Exception exception){
+            return null;
+        }
+
     }
 
 

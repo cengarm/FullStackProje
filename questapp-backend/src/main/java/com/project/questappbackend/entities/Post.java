@@ -10,12 +10,13 @@ import org.hibernate.annotations.OnDeleteAction;
 @Data
 @Table(name = "post")
 public class Post {
+
     @Id
     private Long id;
 
-    // bir çok post bir user
+
     //lazy postu çektiğinde user nesnesi gelmicek. - eager yazsaydım gelecekti.
-    @OnDelete(action = OnDeleteAction.CASCADE) // bir   user silinince tüm postları gitsin.
+    @OnDelete(action = OnDeleteAction.CASCADE) // bir user silinince tüm postları gitsin.
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

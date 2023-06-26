@@ -6,6 +6,7 @@ import com.project.questappbackend.business.dtos.requests.postRequests.CreatePos
 import com.project.questappbackend.business.dtos.requests.postRequests.UpdatePostRequest;
 import com.project.questappbackend.business.dtos.responses.GetByIdPostResponse;
 import com.project.questappbackend.business.dtos.responses.PostListResponse;
+import com.project.questappbackend.business.dtos.responses.UserAllPostResponse;
 import com.project.questappbackend.dataAccess.PostRepository;
 import com.project.questappbackend.dataAccess.UserRepository;
 import com.project.questappbackend.entities.Post;
@@ -20,9 +21,9 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PostManager implements PostService {
 
-    private PostRepository postRepository;
-    private ModelMapperService modelMapperService;
-    private UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final ModelMapperService modelMapperService;
+    private final UserRepository userRepository;
 
     @Override
     public List<PostListResponse> getAllPost() {
@@ -33,6 +34,32 @@ public class PostManager implements PostService {
     }
 
 
+    @Override
+    public List<UserAllPostResponse> getUserAllPosts(
+            Long userId
+    )throws Exception {
+
+        User userFromDb = userRepository
+                .findById(userId)
+                .orElseThrow(()-> new Exception("Böyle bir user yok!"));
+
+        List<Post> postList = postRepository
+                .getAllByUser(userFromDb)
+                .orElseThrow(()-> new Exception("Bu kullanıcıya ait hiç post yok!")); //Lambda -> Functional Interface
+
+        List<UserAllPostResponse> responses =postList.stream().map(user -> this.modelMapperService.forResponse()
+                .map(user, UserAllPostResponse.class)).collect(Collectors.toList());
+
+        return responses;
+
+        /*
+        List<Post> posts =this.postRepository.findAll();
+        List<UserAllPostResponse> responses =posts.stream().map(user -> this.modelMapperService.forResponse()
+                .map(user, UserAllPostResponse.class)).collect(Collectors.toList());
+        return responses;
+        */
+
+    }
 
 
     @Override
