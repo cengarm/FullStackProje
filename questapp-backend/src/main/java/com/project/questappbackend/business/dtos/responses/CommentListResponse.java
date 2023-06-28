@@ -4,14 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostListResponse {
-    private Long id;
-    private Long userId;
-//    private String userName;
-    private String title;
-    private String text;
+@Data
+public class CommentListResponse {
 
+    private Long id;
+    private String post;
+    private String text;
 }

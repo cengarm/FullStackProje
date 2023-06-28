@@ -35,13 +35,10 @@ public class PostManager implements PostService {
 
 
     @Override
-    public List<UserAllPostResponse> getUserAllPosts(
-            Long userId
-    )throws Exception {
+    public List<UserAllPostResponse> getUserAllPosts(Long userId)throws Exception {
 
         User userFromDb = userRepository
-                .findById(userId)
-                .orElseThrow(()-> new Exception("Böyle bir user yok!"));
+                .findById(userId).orElseThrow(()-> new Exception("Böyle bir user yok!"));
 
         List<Post> postList = postRepository
                 .getAllByUser(userFromDb)
@@ -51,21 +48,14 @@ public class PostManager implements PostService {
                 .map(user, UserAllPostResponse.class)).collect(Collectors.toList());
 
         return responses;
-
-        /*
-        List<Post> posts =this.postRepository.findAll();
-        List<UserAllPostResponse> responses =posts.stream().map(user -> this.modelMapperService.forResponse()
-                .map(user, UserAllPostResponse.class)).collect(Collectors.toList());
-        return responses;
-        */
-
     }
 
 
     @Override
     public GetByIdPostResponse getByIdPost(Long userId) {
         Post post = this.postRepository.getById(userId);
-        GetByIdPostResponse response = this.modelMapperService.forResponse().map(post,GetByIdPostResponse.class);
+        GetByIdPostResponse response = this.modelMapperService.forResponse()
+                .map(post,GetByIdPostResponse.class);
         return response;
     }
 
