@@ -1,3 +1,3 @@
 # FullStackProje
 React - Spring Boot
-Güncellenmeye devam edicek
+Güncellenmeye devam edicek.
